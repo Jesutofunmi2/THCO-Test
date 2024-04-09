@@ -1,21 +1,20 @@
 const express = require("express");
 const dotenv =  require('dotenv');
 const {MongoClient} = require("mongodb");
+const middleware = require('./middlewares/error-handler')
+const authRoutes = require('./routes/authRoutes');
+const authRoute = require('./routes/authRoutes');
+
 let db;
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-app.get("/", async(req, res) => {
-    const allUsers = await db.collection("users").find().toArray()
-    console.log(allUsers);
-    res.send("Welcome to my page")
-}) 
+app.use(express.json());
 
-app.get("/admin", (req, res) => {
-    res.send("Welcome to my page admin")
-})
+
+
 
 async function start() {
     const client = new MongoClient("mongodb://root:root@localhost:27017/test-thco?&authSource=admin") 
@@ -27,4 +26,11 @@ async function start() {
 }
 
 start()
+
+app.use(authRoutes);
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
+app.use(middleware.defaultErrorHandler)
+
+module.exports = app
 

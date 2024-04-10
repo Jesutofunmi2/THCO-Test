@@ -1,7 +1,11 @@
+THCO TEST FOR BACKEND: NODE EXPRESS MONGODB TYPESCRIPT
+
 The database connection string 
 
 "mongodb://root:root@localhost:27017/test-thco?&authSource=admin"
-The database connection string value we will use in the MongoDB Compass app:
+
+
+The database connection string value MongoDB Compass app:
 
 mongodb://root:root@localhost:27017/
 

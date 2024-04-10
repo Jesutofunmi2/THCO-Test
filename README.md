@@ -23,6 +23,19 @@ register: post request
 http://localhost:3000/api/v1/auth/register
 Payload: username, email, password
 
+Get All users get request
+http://localhost:3000/api/v1/users
+
+Delete user delete request
+http://localhost:3000/api/v1/users/:id
+
+Update user patch request
+http://localhost:3000/api/v1/users/:id
+
+
+
+
+
 
 
 

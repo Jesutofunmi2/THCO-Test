@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
 
+  followers: [{ followerId: { type: mongoose.Types.ObjectId, ref: 'User' } }],
+
   authentication: {
     password: {
       type: String,
@@ -35,7 +37,7 @@ export const getUserBySessionToken = (sessionToken: string) =>
   UserModel.findOne({
     "authentication.sessionToken": sessionToken,
   });
-export const getUserById = (id: string) => UserModel.findById({ id });
+export const getUserById = (id: string) => UserModel.findById({ _id: id });
 export const createUser = (values: Record<string, any>) =>
   new UserModel(values);
 export const deleteUserById = (id: string) =>

@@ -52,7 +52,7 @@ export const login = async (req: Request, res: Response) => {
     }
 
     // Find user by email
-    const user = await getUserByEmail(email);
+    const user = await getUserByEmail(email).select('+authentication.salt +authentication.password');
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
@@ -63,17 +63,22 @@ export const login = async (req: Request, res: Response) => {
       user.authentication.password
     );
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(403).json({ message: "Unathenticated" });
     }
 
     // Generate JWT
     const token: string = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET || "",
-      { expiresIn: "1h" }
+      { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
-    res.status(200).json({ token });
+    user.authentication.sessionToken = token;
+    await user.save();
+
+    res.cookie('THCO-AUTH', user.authentication.sessionToken, {domain: 'localhost', path: '/'});
+
+   return res.status(200).json(user).end;
   } catch (error) {
     console.error("Error authenticating user:", error);
     res.status(500).json({ message: "Internal server error" });

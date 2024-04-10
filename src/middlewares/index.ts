@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import { get, merge } from 'lodash';
 
 import { getUserBySessionToken } from '../models/userModel';
-import { error } from 'console';
 
 
 export const isOwner = async (req: Request, res: Response, next:NextFunction) => {
@@ -47,3 +46,9 @@ export const isAuthenticated = async (req: Request, res: Response, next:NextFunc
         return res.sendStatus(400);
     }
 }
+
+ export const catchAllMiddleware = (req: Request, res: Response, next: NextFunction) => {
+    const error = new Error('Resource not found');
+    res.status(404).json({ message: 'Resource not found' });
+    next(error);
+};

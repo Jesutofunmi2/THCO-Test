@@ -14,16 +14,14 @@ export const register = async (req: Request, res: Response) => {
         .json({ message: "username or password or email is missing" });
     }
 
-    // Check if user with the provided email already exists
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
       return res.status(400).json({ message: "Email is already registered" });
     }
     const salt = random();
-    // Hash the password
+
     const hashedPassword: string = await bcrypt.hash(password, 10);
 
-    // Create a new user
     const newUser = createUser({
       username,
       email,
@@ -51,13 +49,13 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "email or password is missing" });
     }
 
-    // Find user by email
-    const user = await getUserByEmail(email).select('+authentication.salt +authentication.password');
+    const user = await getUserByEmail(email).select(
+      "+authentication.salt +authentication.password"
+    );
     if (!user) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    // Verify password
     const isPasswordValid: boolean = await bcrypt.compare(
       password,
       user.authentication.password
@@ -76,9 +74,12 @@ export const login = async (req: Request, res: Response) => {
     user.authentication.sessionToken = token;
     await user.save();
 
-    res.cookie('THCO-AUTH', user.authentication.sessionToken, {domain: 'localhost', path: '/'});
+    res.cookie("THCO-AUTH", user.authentication.sessionToken, {
+      domain: "localhost",
+      path: "/",
+    });
 
-   return res.status(200).json(user).end;
+    return res.status(200).json(user).end;
   } catch (error) {
     console.error("Error authenticating user:", error);
     res.status(500).json({ message: "Internal server error" });

@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
   },
 
-  followers: [{ followerId: { type: mongoose.Types.ObjectId, ref: 'User' } }],
+  followers: [{ followerId: { type: mongoose.Types.ObjectId, ref: "User" } }],
 
   authentication: {
     password: {

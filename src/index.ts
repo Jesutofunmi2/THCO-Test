@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction} from 'express';
 import http from 'http';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
@@ -7,6 +7,7 @@ import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import router from '../src/router';
+import { catchAllMiddleware } from '../src/middlewares';
 
 dotenv.config();
 
@@ -35,4 +36,11 @@ async function start() {
 
 start()
 
-app.use('/api/v1', router())
+app.use('/api/v1', router());
+
+app.use(catchAllMiddleware);
+
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+});

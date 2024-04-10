@@ -32,6 +32,18 @@ http://localhost:3000/api/v1/users/:id
 Update user patch request
 http://localhost:3000/api/v1/users/:id
 
+Post 
+http://localhost:3000/api/v1/posts/:userId
+Payload :  text, media
+
+Get Feed get request
+http://localhost:3000/api/v1/posts/:id
+
+
+
+
+
+
 
 
 

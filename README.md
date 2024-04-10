@@ -40,6 +40,28 @@ Get Feed get request
 http://localhost:3000/api/v1/posts/:id
 
 
+Like and Comment 
+
+http://localhost:3000/api/v1/like/:userId   post request
+
+Payload : postId
+
+http://localhost:3000/api/v1/comment/:userId  post request
+
+Payload: postId, text
+
+http://localhost:3000/api/v1/likes/count/:postId get request
+
+http://localhost:3000/api/v1//comments/count/:postId get request
+
+
+Middlewares is also important as well
+make sure you are authorize and authenticated
+
+ isAuthenticated, isOwner
+
+
+
 
 
 

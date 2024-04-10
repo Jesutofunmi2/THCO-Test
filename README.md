@@ -12,3 +12,17 @@ run:
 npm run ourserver   
 
 
+BaseUrl 
+http://localhost:3000/api/v1/
+
+login: post request
+http://localhost:3000/api/v1/auth/login
+Payload : email, password 
+
+register: post request
+http://localhost:3000/api/v1/auth/register
+Payload: username, email, password
+
+
+
+
